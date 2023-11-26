@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Formulario Cliente</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" th:href="@{/css/registro_style.css}">
+	<link rel="shortcut icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- IonIcons CSS -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+		integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+	<main>
+		<div class="cont">
+			<div class="cont-form">
+				<h1 class="titulo">REGISTRO</h1>
+				<form th:action="@{/clientes/salvar/registro}" th:object="${cliente}" method="post">
+					<input type="hidden" th:field="*{id}">
+					<div class="grupo">
+						<label for="anulado" hidden>Bloqueado: </label>
+						<input class="custom-checkbox-input" type="checkbox" id="estadoCheckbox"
+							onchange="toggleEstado()" hidden>
+						<input type="hidden" th:field="*{estado}" id="estadoHidden" th:value="${cliente.estado}">
+					</div>
+					<div class="grupo">
+						<label for="tipoDocumento">Tipo Documento: </label>
+						<select class="form-control entrada" id="tipoDocumento" th:field="*{tipoDocumento}" required>
+							<option value="" disabled selected>Selecciona un tipo de documento</option>
+							<option value="T.I">T.I</option>
+							<option value="C.C">C.C</option>
+							<option value="Pasaporte">Pasaporte</option>
+							<option value="Cedula Extranjera">Cedula extranjera</option>
+							<option value="Licencia de conducir">Licencia de conducir</option>
+						</select>
+					</div>
+					<div class="grupo">
+						<label for="numeroDocumento">Documento: </label>
+						<input type="text" class="form-control entrada" id="numeroDocumento" th:field="*{documento}"
+							placeholder="Numero de documento" required>
+					</div>
+					<div class="grupo">
+						<label for="nombre">Nombre: </label>
+						<input type="text" class="form-control entrada" id="nombre" th:field="*{nombre}"
+							placeholder="Nombre" required>
+					</div>
+					<div class="grupo">
+						<label for="apellido">Apellido: </label>
+						<input type="text" class="form-control entrada" id="apellido" th:field="*{apellido}"
+							placeholder="Apellido" required>
+					</div>
+					<div class="grupo">
+						<label for="direccion">Dirección: </label>
+						<input type="text" class="form-control entrada" id="direccion" th:field="*{direccion}"
+							placeholder="Dirección" required>
+					</div>
+					<div class="grupo">
+						<label for="segtelefonoundoNombre">Telefono: </label>
+						<input type="text" class="form-control entrada" id="telefono" th:field="*{telefono}"
+							placeholder="Telefono" required>
+					</div>
+					<div class="grupo">
+						<label for="correo">Correo: </label>
+						<input type="text" class="form-control entrada" id="correo" th:field="*{correo}"
+							placeholder="Correo" required>
+					</div>
+					<div class="grupo">
+						<label for="contrasena">Contraseña: </label>
+						<input type="password" class="form-control entrada" id="contrasena" th:field="*{contrasena}"
+							placeholder="Contraseña" required>
+					</div>
+					<div class="grupo">
+						<label class="label-show-password" for="show-password">Ver Contraseña: </label>
+						<input class="custom-checkbox-input" type="checkbox" id="show-password"
+							onchange="mostrarContrasena()" />
+					</div>
+					<div class="grupo-b">
+						<button class="button" type="submit">Registrar</button>
+					</div>
+					<div>
+						<p>Ya tienes una cuenta? <a style="text-decoration: underline; color: blue; font-size: 15px;"
+								th:href="@{/login/}">Inicia sesión</a></p>
+					</div>
+					<br>
+				</form>
+			</div>
+		</div>
+
+	</main>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+		</script>
+	<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+		</script>
+	<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+		</script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Llama a la función para inicializar el estado del checkbox
+			inicializarCheckbox();
+		});
+
+		function inicializarCheckbox() {
+			// Obtener referencias a los campos
+			var estadoCheckbox = document.getElementById('estadoCheckbox');
+			var estadoHidden = document.getElementById('estadoHidden');
+
+			// Obtener el valor de estadoHidden
+			var estadoHiddenValue = estadoHidden.value;
+
+			// Inicializar el estado del checkbox según el valor de anuladoHidden
+			estadoCheckbox.checked = (estadoHiddenValue.toLowerCase() === 'Bloqueado');
+
+		}
+
+		function toggleEstado() {
+			// Obtener referencias a los campos
+			var estadoCheckbox = document.getElementById('estadoCheckbox');
+			var estadoHidden = document.getElementById('estadoHidden');
+
+			// Actualizar el valor de anuladoHidden según el estado del checkbox
+
+			// Actualizar otros campos según sea necesario
+			if (estadoCheckbox.checked) {
+
+				estadoHidden.value = 'Bloqueado';
+
+			} else {
+
+				estadoHidden.value = 'Activo';
+			}
+		}
+
+		function mostrarContrasena() {
+			var contrasenaInput = document.getElementById("contrasena");
+			if (contrasenaInput.type === "password") {
+				contrasenaInput.type = "text";
+			} else {
+				contrasenaInput.type = "password";
+			}
+		}
+
+	</script>
+
+</body>
+
+</html>
