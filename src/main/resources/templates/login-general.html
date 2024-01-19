@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Login</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" th:href="@{/css/login_style.css}">
+	<link rel="shortcut icon" th:href="@{/imagenes/logo.png}" type="image/x-icon">
+	<link rel='stylesheet' href='https://unicons.iconscout.com/release/v2.1.9/css/unicons.css'>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+		integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<div class="errorMessage" th:if="${authenticationFailed}">
+		<p th:text="${errorMessage}"></p>
+	</div>
+	<div class="container" id="container">
+
+		<div class="form-container sign-up-container">
+			<form action="/empleados/ingresar" method="post">
+				<img src="/imagenes/logo.png" class="logo">
+				<h1 style="margin-bottom: 40px;">Empleado</h1>
+				<div class="grupo">
+
+					<input class="form-control" type="text" id="usuario" name="usuario" placeholder="Tu Usuario"
+						required>
+				</div>
+				<div class="grupo">
+					<input class="form-control" type="password" id="contrasena" name="contrasena"
+						placeholder="Tu Contraseña" required>
+				</div>
+				<div class="mostrarcontra">
+					<input type="checkbox" name="show-password" class="show-password" id="show-password"
+						onclick="mostrarContrasena()" />
+					<label class="label-show-password" for="show-password">
+						<span>Ver Contraseña</span>
+					</label>
+				</div>
+				<div class="grupo-b">
+					<button class="boton" style="margin-top: 30px;" type="submit">Ingresar</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="form-container sign-in-container">
+			<form action="/clientes/ingresar" method="post">
+				<img src="/imagenes/logo.png" class="logo">
+				<h1 style="margin-bottom: 40px;">Cliente</h1>
+				<div class="grupo">
+					<input class="form-control" type="text" id="correo" name="correo" placeholder="Tu Correo" required>
+				</div>
+				<div class="grupo">
+					<input class="form-control" type="password" id="password" name="password"
+						placeholder="Tu Contraseña" required>
+				</div>
+				<div class="mostrarcontra">
+					<input type="checkbox" name="show-password" class="show-password" id="show-password" onclick="mostrarPassword()" />
+					<label class="label-show-password" for="show-password">
+						<span>Ver Contraseña</span>
+					</label>
+				</div>
+				<div class="grupo-b">
+					<button class="boton" style="margin-top: 30px;" type="submit">Ingresar</button>
+				</div>
+				<div>
+					<p>No tienes una cuenta? <a style="text-decoration: underline; color: blue; font-size: 15px;"
+							th:href="@{/clientes/registro}">Registrate</a></p>
+				</div>
+			</form>
+		</div>
+
+		<div class="overlay-container">
+			<div class="overlay">
+				<div class="overlay-panel overlay-left">
+					<h1>Soy Cliente</h1>
+					<p>Inicia sesión como cliente</p>
+					<button class="ghost" id="signIn">Ir</button>
+				</div>
+				<div class="overlay-panel overlay-right">
+					<h1>Soy Empleado</h1>
+					<p>Inicia sesión como empleado</p>
+					<button class="ghost" id="signUp">Ir</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		const signUpButton = document.getElementById('signUp');
+		const signInButton = document.getElementById('signIn');
+		const container = document.getElementById('container');
+
+		signUpButton.addEventListener('click', () => {
+			container.classList.add("right-panel-active");
+		});
+
+		signInButton.addEventListener('click', () => {
+			container.classList.remove("right-panel-active");
+		});
+
+		function mostrarContrasena() {
+			var contrasenaInput = document.getElementById("contrasena");
+			if (contrasenaInput.type === "password") {
+				contrasenaInput.type = "text";
+			} else {
+				contrasenaInput.type = "password";
+			}
+		}
+
+		function mostrarPassword() {
+			var contrasenaInput = document.getElementById("password");
+			if (contrasenaInput.type === "password") {
+				contrasenaInput.type = "text";
+			} else {
+				contrasenaInput.type = "password";
+			}
+		}
+	</script>
+</body>
+
+</html>
