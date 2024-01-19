@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Formulario Alquiler</title>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" th:href="@{/css/formulario_style.css}">
+	<link rel="stylesheet" th:href="@{/css/navBar_style.css}">
+	<link rel="shortcut icon" th:href="@{/imagenes/Logo.png}" type="image/x-icon">
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- IonIcons CSS -->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+		integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+	<header>
+		<nav class="navbar">
+			<div class="nav-text">
+				<div class="dropdown">
+					<img class="icono" src="/imagenes/logo.png" alt="Icono de la página">
+					<a class="dropbtn" th:href="@{/home/principal}"><ion-icon name="home"></ion-icon></a>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Administradores <ion-icon name="chevron-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a th:href="@{/administradores/lista}">Lista Administradores</a>
+						<a th:href="@{/administradores/nuevo}">Agregar Administrador</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Trabajadores <ion-icon name="chevron-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a th:href="@{/trabajadores/lista}">Lista Trabajadores</a>
+						<a th:href="@{/trabajadores/nuevo}">Agregar Trabajador</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Clientes <ion-icon name="chevron-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a th:href="@{/clientes/lista}">Lista Clientes</a>
+						<a th:href="@{/clientes/nuevo}">Agregar Cliente</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Vehículos <ion-icon name="chevron-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a th:href="@{/vehiculos/lista}">Lista Vehículos</a>
+						<a th:href="@{/vehiculos/nuevo}">Agregar Vehículo</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Alquileres <ion-icon name="chevron-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a th:href="@{/alquileres/lista}">Lista Alquileres</a>
+						<a th:href="@{/alquileres/nuevo}">Agregar Alquiler</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Catálogo <ion-icon name="chevron-down-outline"></ion-icon></button>
+					<div class="dropdown-content">
+						<a th:href="@{/catalogo/administrador}">Ver Catálogo</a>
+					</div>
+				</div>
+				<div class="dropdown exitadm">
+					<a class="dropbtn" th:href="@{/login/}">Cerrar Sesión <ion-icon name="log-out-outline"></ion-icon>
+					</a>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<main>
+		<div class="cont">
+			<div class="cont-form">
+				<h1 class="titulo">Alquiler</h1>
+				<form th:action="@{/alquileres/salvar}" th:object="${alquiler}" method="post">
+					<input type="hidden" th:field="*{id}">
+					<div class="grupo">
+						<label for="cliente">Cliente: </label>
+						<select id="cliente" class="form-control entrada" th:field="*{cliente}">
+							<option th:each="cliente : ${clientes}" th:value="${cliente.id}"
+								th:text="${cliente.documento}" th:data-estado="${cliente.estado}"></option>
+						</select>
+					</div>
+					<div id="error-message" class="alert alert-danger" style="display: none;">
+						El cliente está bloqueado y no se puede guardar el alquiler.
+					</div>
+					<div class="grupo">
+						<label for="vehiculo">Vehiculo: </label>
+						<select id="vehiculo" class="form-control entrada" th:field="*{vehiculo}">
+							<option th:each="vehiculo : ${vehiculos}" th:value="${vehiculo.id}"
+								th:text="${vehiculo.identificador}" th:data-valorDia="${vehiculo.valorDia}"></option>
+						</select>
+					</div>
+					<div class="grupo">
+						<label for="valorDia">Valor Día del Vehículo Seleccionado: </label>
+						<input type="number" class="form-control entrada" id="valorDia" readonly>
+					</div>
+
+					<div class="grupo">
+						<label for="fechaRenta">Fecha Inicial: </label>
+						<input type="date" class="form-control entrada" id="fechaRenta" th:field="*{fechaRenta}"
+							th:value="*{fechaRenta}">
+					</div>
+					<div class="grupo">
+						<label for="fechaDevolucion">Fecha Devolución: </label>
+						<input type="date" class="form-control entrada" id="fechaDevolucion"
+							th:field="*{fechaDevolucion}" th:value="*{fechaDevolucion}">
+					</div>
+					<div class="grupo">
+						<label for="numeroDias">Número de Días: </label>
+						<input type="number" class="form-control entrada" id="numeroDias" readonly>
+					</div>
+					<div class="grupo">
+						<label for="valor">SubTotal: </label>
+						<input type="number" class="form-control entrada" id="valor" th:field="*{valor}"
+							placeholder="Valor" required readonly>
+					</div>
+					<div class="grupo">
+						<label for="diasRestantes">Días de retraso: </label>
+						<input type="number" class="form-control entrada" id="diasRestantes" readonly>
+					</div>
+					<div class="grupo">
+						<label for="multa">Multa: </label>
+						<input type="number" class="form-control entrada" id="multa" th:field="*{multa}"
+							placeholder="Multa" required readonly>
+					</div>
+					<div class="grupo">
+						<label for="valorTotal">Valor Total: </label>
+						<input type="number" class="form-control entrada" id="valorTotal" th:field="*{valorTotal}"
+							placeholder="Valor Total" required readonly>
+					</div>
+					<div class="grupo">
+						<label for="observaciones">Observaciones: </label>
+						<input type="text" class="form-control entrada" id="observaciones" th:field="*{observaciones}"
+							placeholder="Observaciones" required>
+					</div>
+					<div class="grupo">
+						<label for="anulado">Finalizado: </label>
+						<input class="custom-checkbox-input" type="checkbox" id="estadoCheckbox"
+							onchange="toggleEstado()">
+						<input type="hidden" th:field="*{estado}" id="estadoHidden" th:value="${alquiler.estado}">
+					</div>
+					 <div class="alert alert-danger" th:if="${param.alerta}" th:text="${param.alerta}"></div>
+					<div class="grupo-b">
+						<button id="submitButton" class="button" type="submit">Agregar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<footer>
+			<div class="footer">
+				<div class="izquierda">
+					<img class="logo" src="/imagenes/LogoFooter.png" alt="Icono de la página">
+					<div class="redes-sociales">
+						<a class="redes"><ion-icon name="logo-facebook"></ion-icon></a>
+						<a class="redes"><ion-icon name="logo-instagram"></ion-icon></a>
+						<a class="redes"><ion-icon name="logo-twitter"></ion-icon></a>
+						<a class="redes"><ion-icon name="logo-google"></ion-icon></a>
+					</div>
+				</div>
+				<div class="medio">
+					<h4>Contáctanos</h4>
+					<p>Correo: rentacar@gmail.com</p>
+					<p>Teléfono: +57 3124557639</p>
+					<h4>Horario de atención</h4>
+					<p>Lunes a viernes 8:00am a 5:30pm</p>
+					<p>Sábados 8:00am a 2:00pm</p>
+				</div>
+				<div class="derecha">
+					<h4>Universo RentaCar</h4>
+					<p>RentaCar en Colombia</p>
+					<p>Grupo RentaCar</p>
+					<p>Código de ética</p>
+					<p>Términos y condiciones</p>
+				</div>
+				<div class="abajo">
+					<p>&copy; 2023 RentaCar. Todos los derechos reservados.</p>
+				</div>
+			</div>
+		</footer>
+
+	</main>
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+		</script>
+	<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+		</script>
+	<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+		</script>
+
+	<!-- manejo del estado con checkBox -->
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			// Llama a la función para inicializar el estado del checkbox
+			inicializarCheckbox();
+		});
+
+		function inicializarCheckbox() {
+			// Obtener referencias a los campos
+			var estadoCheckbox = document.getElementById('estadoCheckbox');
+			var estadoHidden = document.getElementById('estadoHidden');
+
+			// Obtener el valor de estadoHidden
+			var estadoHiddenValue = estadoHidden.value;
+
+			// Inicializar el estado del checkbox según el valor de anuladoHidden
+			estadoCheckbox.checked = (estadoHiddenValue.toLowerCase() === 'finalizado');
+
+		}
+
+		function toggleEstado() {
+			// Obtener referencias a los campos
+			var estadoCheckbox = document.getElementById('estadoCheckbox');
+			var estadoHidden = document.getElementById('estadoHidden');
+
+			// Actualizar el valor de anuladoHidden según el estado del checkbox
+
+			// Actualizar otros campos según sea necesario
+			if (estadoCheckbox.checked) {
+
+				estadoHidden.value = 'Finalizado';
+
+			} else {
+
+				estadoHidden.value = 'Activo';
+			}
+		}
+
+	</script>
+
+	<script>
+
+		var clienteSelect = document.getElementById('cliente');
+		clienteSelect.addEventListener('change', actualizarEstado);
+
+		function actualizarEstado() {
+			var selectedOption = clienteSelect.options[clienteSelect.selectedIndex];
+			var estado = selectedOption.getAttribute('data-estado');
+			if (estado === "Bloqueado") {
+				var miBoton = document.getElementById("submitButton");
+				var errorMessage = document.getElementById('error-message');
+				errorMessage.style.display = 'block';
+				miBoton.disabled = true;
+			}else{
+				var miBoton = document.getElementById("submitButton");
+				var errorMessage = document.getElementById('error-message');
+				errorMessage.style.display = 'none';
+				miBoton.disabled = false;
+			}
+		}
+		actualizarEstado();
+	</script>
+
+	<script>
+		var clienteSelect = document.getElementById('cliente');
+		var vehiculoSelect = document.getElementById('vehiculo');
+		var valorDiaInput = document.getElementById('valorDia');
+		var fechaRentaInput = document.getElementById('fechaRenta');
+		var fechaDevolucionInput = document.getElementById('fechaDevolucion');
+		var numeroDiasInput = document.getElementById('numeroDias');
+		var valorInput = document.getElementById('valor');
+		var diasRestantesInput = document.getElementById('diasRestantes');
+		var multaInput = document.getElementById('multa');
+		var valorTotalInput = document.getElementById('valorTotal');
+
+		vehiculoSelect.addEventListener('change', actualizarValorDia);
+		fechaRentaInput.addEventListener('input', calcularNumeroDiasYValor);
+		fechaDevolucionInput.addEventListener('input', calcularNumeroDiasYValor);
+		fechaDevolucionInput.addEventListener('input', calcularDiasRestantes);
+		multaInput.addEventListener('input', calcularValorTotal);
+
+		function actualizarValorDia() {
+			var selectedOption = vehiculoSelect.options[vehiculoSelect.selectedIndex];
+			var valorDia = selectedOption.getAttribute('data-valorDia');
+			valorDiaInput.value = valorDia;
+			calcularNumeroDiasYValor();
+		}
+
+		function calcularNumeroDiasYValor() {
+			var fechaRenta = new Date(fechaRentaInput.value);
+			var fechaDevolucion = new Date(fechaDevolucionInput.value);
+			var valorDia = parseFloat(valorDiaInput.value);
+
+			if (!isNaN(fechaRenta) && !isNaN(fechaDevolucion) && !isNaN(valorDia)) {
+				var tiempoRestante = fechaDevolucion - fechaRenta;
+				var diasRestantes = Math.ceil(tiempoRestante / (1000 * 60 * 60 * 24));
+
+				numeroDiasInput.value = diasRestantes;
+				valorInput.value = (diasRestantes * valorDia).toFixed(2);
+				calcularValorTotal();
+			}
+		}
+
+		function calcularDiasRestantes() {
+			var fechaDevolucion = new Date(fechaDevolucionInput.value);
+			var fechaActual = new Date();
+
+			if (!isNaN(fechaDevolucion)) {
+				var tiempoRestante = fechaActual - fechaDevolucion;
+				var diasRestantes = Math.ceil(tiempoRestante / (1000 * 60 * 60 * 24));
+
+				if (diasRestantes > 0) {
+					diasRestantesInput.value = diasRestantes - 1;
+					calcularMulta();
+				} else {
+					diasRestantesInput.value = "0";
+					multaInput.value = "0";
+					calcularValorTotal();
+				}
+			} else {
+				diasRestantesInput.value = "";
+				multaInput.value = "";
+			}
+		}
+		calcularDiasRestantes();
+
+		function calcularMulta() {
+			multaInput.value = (diasRestantesInput.value * 10000).toFixed(2);
+			calcularValorTotal();
+		}
+
+		function calcularValorTotal() {
+			var valor = parseFloat(valorInput.value);
+			var multa = parseFloat(multaInput.value);
+
+			if (!isNaN(valor) && !isNaN(multa)) {
+				valorTotalInput.value = (valor + multa).toFixed(2);
+			}
+		}
+
+		actualizarValorDia();
+	</script>
+
+
+</body>
+
+</html>
